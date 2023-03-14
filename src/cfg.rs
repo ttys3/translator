@@ -11,7 +11,11 @@ pub fn init_config() {
     env_logger::init();
 
     #[cfg(not(target_os = "windows"))]
-    let settings_path = std::path::PathBuf::from("/etc/translator/settings");
+    let settings_path = {
+        let xdg_dirs = xdg::BaseDirectories::with_prefix("translator").unwrap();
+        xdg_dirs.place_config_file("settings.toml")
+            .expect("cannot create configuration directory")
+    };
 
     #[cfg(target_os = "windows")]
     let settings_path = {

@@ -23,6 +23,7 @@ ico = "0.3"
 rdev = "0.5"
 tauri-hotkey = { git = "https://github.com/zu1k/tauri-hotkey-rs", branch = "master" }
 env_logger = "0.10.0"
+xdg = "2.4.1"
 
 [build-dependencies]
 winres = "0.1"
