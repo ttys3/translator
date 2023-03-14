@@ -51,7 +51,10 @@ fn setup_ui_task(cc: &CreationContext) -> Box<dyn App> {
                             target_lang,
                             source_lang,
                         )
-                        .unwrap_or("翻译接口失效，请更换".to_string())
+                        .unwrap_or_else(|e|{
+                            warn!("翻译失败: api:{} {:?}", &get_api(), e);
+                            format!("翻译失败: api:{} {:?}", &get_api(), e).to_string()
+                        })
                     };
 
                     // 翻译结束 UI
@@ -119,7 +122,10 @@ fn setup_ui_task(cc: &CreationContext) -> Box<dyn App> {
                                         (state.source_lang, state.target_lang)
                                     };
                                     deepl::translate(&get_api(), text_new, target_lang, source_lang)
-                                        .unwrap_or("翻译接口失效，请更换".to_string())
+                                        .unwrap_or_else(|e|{
+                                            warn!("翻译失败: api:{} {:?}", &get_api(), e);
+                                            format!("翻译失败: api:{} {:?}", &get_api(), e).to_string()
+                                        })
                                 };
 
                                 // 翻译结束 UI
@@ -157,7 +163,10 @@ fn setup_ui_task(cc: &CreationContext) -> Box<dyn App> {
                             (state.text.clone(), state.source_lang, state.target_lang)
                         };
                         deepl::translate(&get_api(), text, target_lang, source_lang)
-                            .unwrap_or("翻译接口失效，请更换".to_string())
+                            .unwrap_or_else(|e|{
+                                warn!("翻译失败: api:{} {:?}", &get_api(), e);
+                                format!("翻译失败: api:{} {:?}", &get_api(), e).to_string()
+                            })
                     };
 
                     // 翻译结束 UI
@@ -180,7 +189,7 @@ pub fn run() {
 
     let native_options = eframe::NativeOptions {
         always_on_top: true,
-        decorated: false,
+        decorated: true,
         initial_window_size: Some(egui::vec2(width, height)),
         icon_data: Some(get_icon_data()),
         drag_and_drop_support: true,
